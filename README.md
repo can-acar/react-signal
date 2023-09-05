@@ -5,7 +5,7 @@
 
 # React Signal Example
 
-Bu örnek, React kullanarak sinyal (signal) kullanımını göstermektedir. Sinyal, React uygulamalarında durum yönetimini kolaylaştırmak için kullanılabilir.
+Bu örnek, React kullanarak sinyal (signal) kullanımını göstermektedir. Signal, React uygulamalarında durum yönetimini kolaylaştırmak için kullanılabilir.
 
 ## Kod Örneği
 
