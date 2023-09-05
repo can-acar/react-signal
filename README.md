@@ -1,3 +1,4 @@
 # react-signal
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/js-65b615)
+[Test and Run on StackBlitz ⚡️]([https://stackblitz.com/edit/react-signal?file=src%2FApp.js])
+
