@@ -44,17 +44,27 @@ const signal = (initialValue) => {
   const emitter = new EventEmitter();
   const store = { value: initialValue };
 
-  const proxy = new Proxy(store, {
-    get(target, property) {
-      const value = Reflect.get(target, property);
-      return value;
-    },
-    set(target, property, value) {
-      const oldValue = Reflect.get(target, property);
-      emitter.emit('valueChanged', { property, oldValue, newValue: value });
-      return Reflect.set(...arguments);
-    },
-  });
+  const createProxy = (target) => {
+    return new Proxy(target, {
+      get(target, property) {
+        const value = Reflect.get(...arguments);
+        if (typeof value === 'object' && value !== null) {
+          return createProxy(value); // Recursive olarak Proxy oluştur
+        }
+        return value;
+      },
+      set(target, property, value) {
+        const oldValue = target[property];
+        target[property] = value;
+        if (oldValue !== value) {
+          emitter.emit('valueChanged', { property, oldValue, newValue: value });
+        }
+        return Reflect.set(...arguments);
+      },
+    });
+  };
+
+  const proxy = createProxy({ value: initialValue });
 
   return {
     get value() {
@@ -73,7 +83,7 @@ const signal = (initialValue) => {
       };
     },
 
-    get useValue() {
+    get useSignal() {
       const [_, forceUpdate] = useState();
 
       useEffect(() => {
@@ -81,6 +91,13 @@ const signal = (initialValue) => {
           forceUpdate(newValue);
         });
       });
+
+      return useMemo(
+        () => () => {
+          return proxy;
+        },
+        [_]
+      );
     },
 
     onListen(listener) {
@@ -90,5 +107,3 @@ const signal = (initialValue) => {
     },
   };
 };
-
-return signal;
