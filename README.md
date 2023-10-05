@@ -37,6 +37,10 @@ text.onListen((value, prev, next) => {
 });
 
 export default function App() {
+  const _count = count.useValue();
+  const _text =  text.useValue();
+  cont  _authentication  = authentication.useValue();
+
   const onUp = useCallback(() => {
     count.value += 1;
     authentication.value.isLogin = !authentication.value.isLogin;
