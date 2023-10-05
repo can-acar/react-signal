@@ -45,7 +45,7 @@ class CreateSignal {
     }
     
     /* this is magic */
-    get useSignal() {
+    get useValue() {
         const signal = this;
         const [_, forceUpdate] = useState();
         
@@ -53,11 +53,11 @@ class CreateSignal {
             signal.emitter.on('valueChanged', ({newValue}) => {
                 forceUpdate(newValue);
             });
-        });
+        }, []);
         
         return useMemo(
             () => () => {
-                return proxy;
+                return this.proxy;
             },
             [_]
         );
